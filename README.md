@@ -36,7 +36,7 @@ flutter build apk --release
 ### macOS
 
 ```sh
-fultter build macos --release
+flutter build macos --release
 appdmg appdmg.json macos.dmg
 ```
 
