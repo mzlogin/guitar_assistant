@@ -42,12 +42,17 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   bool _isPlaying = false;
   // 当前计数
   int _currentStep = -1;
+  // 节拍间隔 in millis
+  int get _calcTimerDuration {
+    return (4 * 60 * 1000) ~/ (_beatsPerMinute * _oneBeat);
+  }
 
   late AnimationController _animationController;
   Timer? _timer;
 
-  final AudioCache _audioCache = AudioCache();
-  AudioPlayer advancedPlayer = AudioPlayer();
+  final AudioCache _audioCache = AudioCache(
+    fixedPlayer: AudioPlayer(mode: PlayerMode.LOW_LATENCY),
+  );
 
   @override
   void initState() {
@@ -56,10 +61,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     ..duration = const Duration(milliseconds: 500);
   }
 
-  _renewTimer() {
-    _timer = Timer(Duration(milliseconds: (4 * 60 * 1000) ~/ (_beatsPerMinute * _oneBeat)), () {
+  _startTimer() {
+    _timer?.cancel();
+    _timer = Timer.periodic(Duration(milliseconds: _calcTimerDuration), (timer) {
       _playAudio();
-      _renewTimer();
     });
   }
 
@@ -75,21 +80,25 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   _switchPlayingState() {
     if (_isPlaying) {
+      _onConfigChanged();
       _animationController.reverse();
       _timer?.cancel();
     } else {
       _animationController.forward();
-      _renewTimer();
+      _startTimer();
     }
     setState(() {
       _isPlaying = !_isPlaying;
     });
   }
 
-  _resetCurrentStep() {
+  _onConfigChanged() {
     setState(() {
       _currentStep = -1;
     });
+    if (_isPlaying) {
+      _startTimer();
+    }
   }
 
   _incrementCurrentStep() {
@@ -106,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       _oneBeat *= 2;
     });
     if (_isPlaying) {
-      _resetCurrentStep();
+      _onConfigChanged();
     }
   }
 
@@ -118,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       _oneBeat = _oneBeat ~/ 2;
     });
     if (_isPlaying) {
-      _resetCurrentStep();
+      _onConfigChanged();
     }
   }
 
@@ -130,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       _beatsPerMeasure++;
     });
     if (_isPlaying) {
-      _resetCurrentStep();
+      _onConfigChanged();
     }
   }
 
@@ -142,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       _beatsPerMeasure--;
     });
     if (_isPlaying) {
-      _resetCurrentStep();
+      _onConfigChanged();
     }
   }
 
@@ -154,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       _beatsPerMinute++;
     });
     if (_isPlaying) {
-      _resetCurrentStep();
+      _onConfigChanged();
     }
   }
 
@@ -166,7 +175,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       _beatsPerMinute--;
     });
     if (_isPlaying) {
-      _resetCurrentStep();
+      _onConfigChanged();
     }
   }
 
@@ -179,17 +188,20 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       body: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               IconButton(onPressed: _decrementBeatsPerMinute, icon: const Icon(Icons.remove)),
-              Text('$_beatsPerMinute'),
+              Text('$_beatsPerMinute', textScaleFactor: 8,),
               IconButton(onPressed: _incrementBeatsPerMinute, icon: const Icon(Icons.add)),
             ],
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(onPressed: _decrementBeatsPerMeasure, icon: const Icon(Icons.remove_circle)),
               IconButton(onPressed: _incrementBeatsPerMeasure, icon: const Icon(Icons.add_circle)),
-              Text('$_beatsPerMeasure / $_oneBeat'),
+              Text('$_beatsPerMeasure / $_oneBeat', textScaleFactor: 2,),
               IconButton(onPressed: _decrementOneBeat, icon: const Icon(Icons.remove_circle)),
               IconButton(onPressed: _incrementOneBeat, icon: const Icon(Icons.add_circle)),
             ],
@@ -198,6 +210,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             child: AnimatedIcon(
               icon: AnimatedIcons.play_pause,
               progress: _animationController,
+              size: 64,
             ),
             onTap: _switchPlayingState,
           )
