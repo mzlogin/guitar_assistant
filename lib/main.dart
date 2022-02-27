@@ -57,14 +57,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
 
   _renewTimer() {
-    _timer = Timer(Duration(milliseconds: (60 * 1000 ~/ _beatsPerMinute)), () {
-      _playAudio().then((value) => _incrementCurrentStep);
+    _timer = Timer(Duration(milliseconds: (4 * 60 * 1000) ~/ (_beatsPerMinute * _oneBeat)), () {
+      _playAudio();
       _renewTimer();
     });
   }
 
-  Future<void> _playAudio() {
+  Future<AudioPlayer> _playAudio() {
     int nextStep = _currentStep + 1;
+    _incrementCurrentStep();
     if (nextStep % _beatsPerMeasure == 0) {
       return _audioCache.play('sound-effect-1_1.wav');
     } else {
@@ -85,6 +86,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     });
   }
 
+  _resetCurrentStep() {
+    setState(() {
+      _currentStep = -1;
+    });
+  }
+
   _incrementCurrentStep() {
     setState(() {
       _currentStep++;
@@ -92,12 +99,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
 
   _incrementOneBeat() {
-    if (_oneBeat >= 16) {
+    if (_oneBeat >= 32) {
       return;
     }
     setState(() {
       _oneBeat *= 2;
     });
+    if (_isPlaying) {
+      _resetCurrentStep();
+    }
   }
 
   _decrementOneBeat() {
@@ -107,15 +117,21 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     setState(() {
       _oneBeat = _oneBeat ~/ 2;
     });
+    if (_isPlaying) {
+      _resetCurrentStep();
+    }
   }
 
   _incrementBeatsPerMeasure() {
-    if (_beatsPerMeasure >= 20) {
+    if (_beatsPerMeasure >= 16) {
       return;
     }
     setState(() {
       _beatsPerMeasure++;
     });
+    if (_isPlaying) {
+      _resetCurrentStep();
+    }
   }
 
   _decrementBeatsPerMeasure() {
@@ -125,15 +141,21 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     setState(() {
       _beatsPerMeasure--;
     });
+    if (_isPlaying) {
+      _resetCurrentStep();
+    }
   }
 
   _incrementBeatsPerMinute() {
-    if (_beatsPerMinute >= 500) {
+    if (_beatsPerMinute >= 360) {
       return;
     }
     setState(() {
       _beatsPerMinute++;
     });
+    if (_isPlaying) {
+      _resetCurrentStep();
+    }
   }
 
   _decrementBeatsPerMinute() {
@@ -143,6 +165,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     setState(() {
       _beatsPerMinute--;
     });
+    if (_isPlaying) {
+      _resetCurrentStep();
+    }
   }
 
   @override
