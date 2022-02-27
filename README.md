@@ -19,13 +19,11 @@ Guitar Assistant / 吉他助手
 
 ## 运行效果
 
-### macOS
-
 ![](./screenshots/macos.png)
 
-### Android
+## 下载
 
-![](./screenshots/android.png)
+<https://github.com/mzlogin/guitar_assistant/releases>
 
 ## 已知问题
 
