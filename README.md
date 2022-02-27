@@ -25,6 +25,21 @@ Guitar Assistant / 吉他助手
 
 <https://github.com/mzlogin/guitar_assistant/releases>
 
+## 编译打包
+
+### Android
+
+```sh
+flutter build apk --release
+```
+
+### macOS
+
+```sh
+fultter build macos --release
+appdmg appdmg.json macos.dmg
+```
+
 ## 已知问题
 
 - [ ] BPM 高了以后，节奏不稳，有的拍子听不到声
