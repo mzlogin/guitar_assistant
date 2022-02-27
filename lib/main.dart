@@ -16,6 +16,9 @@ class MyApp extends StatelessWidget {
       title: '吉他助手',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        textTheme: const TextTheme(
+          bodyText2: TextStyle(color: Colors.blue)
+        )
       ),
       home: const MyHomePage(title: '吉他助手'),
     );
@@ -186,24 +189,29 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         title: Text(widget.title),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              IconButton(onPressed: _decrementBeatsPerMinute, icon: const Icon(Icons.remove)),
+              IconButton(onPressed: _decrementBeatsPerMinute, icon: const Icon(Icons.remove, color: Colors.blueGrey,)),
               Text('$_beatsPerMinute', textScaleFactor: 8,),
-              IconButton(onPressed: _incrementBeatsPerMinute, icon: const Icon(Icons.add)),
+              IconButton(onPressed: _incrementBeatsPerMinute, icon: const Icon(Icons.add, color: Colors.blueGrey,)),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            children: _indicators(),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              IconButton(onPressed: _decrementBeatsPerMeasure, icon: const Icon(Icons.remove_circle)),
-              IconButton(onPressed: _incrementBeatsPerMeasure, icon: const Icon(Icons.add_circle)),
+              IconButton(onPressed: _decrementBeatsPerMeasure, icon: const Icon(Icons.remove_circle, color: Colors.blueGrey,)),
+              IconButton(onPressed: _incrementBeatsPerMeasure, icon: const Icon(Icons.add_circle, color: Colors.blueGrey,)),
               Text('$_beatsPerMeasure / $_oneBeat', textScaleFactor: 2,),
-              IconButton(onPressed: _decrementOneBeat, icon: const Icon(Icons.remove_circle)),
-              IconButton(onPressed: _incrementOneBeat, icon: const Icon(Icons.add_circle)),
+              IconButton(onPressed: _decrementOneBeat, icon: const Icon(Icons.remove_circle, color: Colors.blueGrey,)),
+              IconButton(onPressed: _incrementOneBeat, icon: const Icon(Icons.add_circle, color: Colors.blueGrey,)),
             ],
           ),
           InkWell(
@@ -211,11 +219,27 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               icon: AnimatedIcons.play_pause,
               progress: _animationController,
               size: 64,
+              color: Colors.blueGrey,
             ),
             onTap: _switchPlayingState,
           )
         ]
       )
     );
+  }
+
+  List<Widget> _indicators() {
+    final int currentBeatIndex = _currentStep % _beatsPerMeasure;
+    List<Widget> result = <Widget>[];
+    for (int i = 0; i < _beatsPerMeasure; i++) {
+      result.add(Icon(
+        (_isPlaying && currentBeatIndex == i)
+            ? Icons.favorite
+            : Icons.favorite_border,
+        color: Colors.blue,
+        size: 36,
+      ));
+    }
+    return result;
   }
 }

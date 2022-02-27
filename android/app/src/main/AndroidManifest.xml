@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.mazhuang.guitar_assistant">
    <application
-        android:label="guitar_assistant"
+        android:label="吉他助手"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -11,11 +11,21 @@ Guitar Assistant / 吉他助手
 - [ ] 节拍器（WIP）
   - [x] BPM 简易展示和调整
   - [x] 拍号展示和调整
-  - [ ] 当前拍展示
+  - [x] 当前拍展示
   - [ ] 记住设置
   - [ ] 支持更多音效
   - [ ] 滑动调节 BPM
 - [ ] 调音器（TODO）
+
+## 运行效果
+
+### macOS
+
+![](./screenshots/macos.png)
+
+### Android
+
+![](./screenshots/android.png)
 
 ## 已知问题
 
