@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 
+const _theme = Colors.red;
+
 void main() {
   runApp(const MyApp());
 }
@@ -15,9 +17,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: '吉他助手',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: _theme,
         textTheme: const TextTheme(
-          bodyText2: TextStyle(color: Colors.blue)
+          bodyText2: TextStyle(color: _theme)
         )
       ),
       home: const MyHomePage(title: '吉他助手'),
@@ -236,7 +238,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         (_isPlaying && currentBeatIndex == i)
             ? Icons.favorite
             : Icons.favorite_border,
-        color: Colors.blue,
+        color: _theme,
         size: 36,
       ));
     }

@@ -40,6 +40,14 @@ flutter build macos --release
 appdmg appdmg.json macos.dmg
 ```
 
+### iOS
+
+目前没有注册开发者账号，真机调试运行（需要先在 Xcode 配置好签名配置）：
+
+```sh
+flutter run
+```
+
 ## 已知问题
 
 - [ ] BPM 高了以后，节奏不稳，有的拍子听不到声
