@@ -42,7 +42,13 @@ appdmg appdmg.json macos.dmg
 
 ### iOS
 
-目前没有注册开发者账号，真机调试运行（需要先 `open ios/Runner.xcworkspace`，在 Xcode 配置好签名配置）：
+真机调试：<https://flutter.cn/docs/get-started/install/macos#deploy-to-ios-devices>
+
+简而言之是需要先 `open ios/Runner.xcworkspace`，在 Xcode 配置好签名配置，构建运行 APP 后还需要在手机上「设置-通用-VPN 与设备管理」里信任开发者 APP。
+
+iOS 模拟器：<https://flutter.cn/docs/get-started/install/macos#set-up-the-ios-simulator>，可以在 IDE 里启动或者执行命令 `open -a Simulator`。
+
+一切准备妥当，并连接设备/启动模拟器后：
 
 ```sh
 flutter run
