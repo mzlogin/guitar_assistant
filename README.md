@@ -42,7 +42,7 @@ appdmg appdmg.json macos.dmg
 
 ### iOS
 
-目前没有注册开发者账号，真机调试运行（需要先在 Xcode 配置好签名配置）：
+目前没有注册开发者账号，真机调试运行（需要先 `open ios/Runner.xcworkspace`，在 Xcode 配置好签名配置）：
 
 ```sh
 flutter run
