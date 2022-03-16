@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:wakelock/wakelock.dart';
 
 const _theme = Colors.red;
 
@@ -94,6 +95,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     }
     setState(() {
       _isPlaying = !_isPlaying;
+      Wakelock.toggle(enable: _isPlaying);
     });
   }
 
